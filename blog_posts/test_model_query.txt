@@ -1,0 +1,34 @@
+                                  Test Model with the shell, you can create categories subcategory as illustrated below
+                                ============================================================================================
+
+>>> from my_posts.models import *
+>>> fruits = Category.objects.create(name='fruits', slug='fruits')
+>>> fruits
+<Category: fruits>
+>>> beverages = Category.objects.create( name='bevarages', slug='beverages' )
+>>>
+>>> berry = Category.objects.create( name = 'berry', slug = 'berry', parent = fruits )
+>>> citrus_fruits = Category.objects.create(name='citrus fruits', slug='citrus-fruits', parent=fruits)
+>>>
+>>> hot_bev = Category.objects.create( name = 'hot', slug = 'hot' , parent = beverages )
+>>> cold_bev = Category.objects.create( name = 'cold', slug = 'cold', parent = beverages )
+>>>
+>>> Category.objects.all()
+<QuerySet [<Category: fruits -> berry>, <Category: bevarages>, <Category: fruits -> citrus fruits>, 
+<Category: bevarages -> cold>, <Category: fruits>, <Category: bevarages -> hot>]>
+>>>
+>>> Category.objects.get(name='fruits')
+<Category: fruits>
+>>> f = Category.objects.get(name='fruits', parent=None)
+>>> f
+<Category: fruits>
+
+>>> f.children.all()
+<QuerySet [<Category: fruits -> berry>, <Category: fruits -> citrus fruits>]>
+>>> b =  f.children.get( name='berry', parent=f)
+>>> b
+<Category: fruits -> berry>
+
+>>> Category.objects.all().delete()            #to delete all the Category objects
+
+(6, {'my_posts.Category': 6})
